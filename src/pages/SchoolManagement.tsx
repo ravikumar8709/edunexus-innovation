@@ -1,9 +1,12 @@
 import React from 'react';
-import { ChevronLeft, Users, BookOpen, Calendar, Bell, Settings, PieChart, FileText } from 'lucide-react';
+import { ChevronLeft, Users, Calendar, FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PageTransition from '../components/PageTransition';
+import { useTheme } from "../contexts/ThemeContext";
 
 const SchoolManagement = () => {
+  const { theme } = useTheme();
+
   const features = [
     {
       title: "Student Information System",
@@ -66,24 +69,24 @@ const SchoolManagement = () => {
 
   return (
     <PageTransition>
-      <div className="bg-gray-50 min-h-screen">
+      <div className={`${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'} min-h-screen`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="mb-8">
-            <Link to="/" className="inline-flex items-center text-blue-600 hover:text-blue-800">
+            <Link to="/" className="inline-flex items-center text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
               <ChevronLeft className="h-5 w-5" />
               <span>Back to Home</span>
             </Link>
           </div>
-          
+
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">School Management System</h1>
-            <p className="text-xl text-gray-600">Transform your school's administration with our comprehensive management solution</p>
+            <h1 className="text-4xl font-bold mb-4">School Management System</h1>
+            <p className="text-xl text-gray-600 dark:text-gray-300">Transform your school's administration with our comprehensive management solution</p>
           </div>
-          
+
           {/* Main Features */}
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-16">
             {features.map((feature, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:transform hover:scale-105">
+              <div key={index} className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:transform hover:scale-105">
                 <div className="h-48 overflow-hidden relative">
                   <img 
                     src={feature.image} 
@@ -98,10 +101,10 @@ const SchoolManagement = () => {
                   </div>
                 </div>
                 <div className="p-6">
-                  <p className="text-gray-600 mb-4">{feature.description}</p>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">{feature.description}</p>
                   <a 
                     href={feature.demoUrl} 
-                    className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center"
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium inline-flex items-center"
                   >
                     View Demo
                     <ChevronLeft className="h-4 w-4 ml-2 transform rotate-180" />
@@ -114,7 +117,7 @@ const SchoolManagement = () => {
           {/* Demo Screens */}
           <div className="space-y-16">
             {demoScreens.map((demo) => (
-              <div key={demo.id} id={demo.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div key={demo.id} id={demo.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
                 <div className="md:flex">
                   <div className="md:w-1/2">
                     <img 
@@ -124,10 +127,10 @@ const SchoolManagement = () => {
                     />
                   </div>
                   <div className="p-8 md:w-1/2">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">{demo.title}</h3>
+                    <h3 className="text-2xl font-bold mb-4">{demo.title}</h3>
                     <ul className="space-y-4">
                       {demo.features.map((feature, index) => (
-                        <li key={index} className="flex items-center text-gray-600">
+                        <li key={index} className="flex items-center text-gray-600 dark:text-gray-300">
                           <svg className="h-5 w-5 text-green-500 mr-3" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
                             <path d="M5 13l4 4L19 7"></path>
                           </svg>
