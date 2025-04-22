@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../contexts/ThemeContext';
-import { Code, Briefcase, Award, Book, Plus, X, Mail, Clock, ChevronLeft } from 'lucide-react';
+import { Code, Briefcase, Award, Book, Plus, X, Mail, Clock, ChevronLeft, FileText, FileImage } from 'lucide-react';
 import PageTransition from '../../components/PageTransition';
 
 const CreateProfile = () => {
@@ -27,6 +27,11 @@ const CreateProfile = () => {
     availability: 'full-time',
   });
 
+  // New state for file uploads
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [idFiles, setIdFiles] = useState<File[]>([]);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
     
@@ -40,6 +45,8 @@ const CreateProfile = () => {
     if (!formData.experience.trim()) newErrors.experience = 'Experience is required';
     if (!formData.education.trim()) newErrors.education = 'Education is required';
     if (!formData.hourlyRate) newErrors.hourlyRate = 'Hourly rate is required';
+    if (!resumeFile) newErrors.resume = 'Resume is required';
+    if (idFiles.length === 0) newErrors.idFiles = 'At least one ID proof is required';
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -56,17 +63,100 @@ const CreateProfile = () => {
     setSkills(skills.filter(skill => skill !== skillToRemove));
   };
 
+  const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (file.type === 'application/pdf' || file.type === 'application/msword' || file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+        setResumeFile(file);
+        if (errors.resume) {
+          setErrors(prev => {
+            const newErrors = { ...prev };
+            delete newErrors.resume;
+            return newErrors;
+          });
+        }
+      } else {
+        setErrors(prev => ({ ...prev, resume: 'Please upload a PDF or Word document' }));
+      }
+    }
+  };
+
+  const handleIdFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      const validFiles = files.filter(file => 
+        file.type === 'application/pdf' || 
+        file.type.startsWith('image/')
+      );
+      
+      if (validFiles.length > 0) {
+        setIdFiles([...idFiles, ...validFiles]);
+        if (errors.idFiles) {
+          setErrors(prev => {
+            const newErrors = { ...prev };
+            delete newErrors.idFiles;
+            return newErrors;
+          });
+        }
+      } else {
+        setErrors(prev => ({ ...prev, idFiles: 'Please upload PDF or image files' }));
+      }
+    }
+  };
+
+  const removeIdFile = (index: number) => {
+    const newFiles = [...idFiles];
+    newFiles.splice(index, 1);
+    setIdFiles(newFiles);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!validateForm()) return;
     
     setIsSubmitting(true);
+    setUploadProgress(0);
     
     try {
-      console.log('Profile data:', { ...formData, skills });
+      // Simulate file upload progress
+      const interval = setInterval(() => {
+        setUploadProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(interval);
+            return 90;
+          }
+          return prev + 10;
+        });
+      }, 300);
+      
+      // Simulate API call with form data and files
+      const formDataToSend = new FormData();
+      
+      // Append all form data
+      Object.entries(formData).forEach(([key, value]) => {
+        formDataToSend.append(key, value);
+      });
+      
+      // Append skills
+      skills.forEach(skill => {
+        formDataToSend.append('skills', skill);
+      });
+      
+      // Append files
+      if (resumeFile) {
+        formDataToSend.append('resume', resumeFile);
+      }
+      
+      idFiles.forEach(file => {
+        formDataToSend.append('idDocuments', file);
+      });
+      
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1500));
+      clearInterval(interval);
+      setUploadProgress(100);
+      
       // Handle successful profile creation
       navigate('/freelance', { state: { profileCreated: true } });
     } catch (error) {
@@ -109,6 +199,25 @@ const CreateProfile = () => {
               Showcase your skills and experience to find great freelance opportunities
             </p>
           </div>
+
+          {isSubmitting && uploadProgress > 0 && (
+            <div className="mb-6">
+              <div className="flex justify-between mb-1">
+                <span className={`text-sm font-medium ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`}>
+                  Uploading files...
+                </span>
+                <span className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  {uploadProgress}%
+                </span>
+              </div>
+              <div className={`w-full h-2.5 rounded-full ${isDarkMode ? 'bg-gray-700' : 'bg-gray-200'}`}>
+                <div
+                  className="h-2.5 rounded-full bg-blue-600"
+                  style={{ width: `${uploadProgress}%` }}
+                ></div>
+              </div>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Basic Information */}
@@ -201,6 +310,109 @@ const CreateProfile = () => {
                     }`}
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* Resume Upload */}
+            <div className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow rounded-lg p-6`}>
+              <h2 className={`text-xl font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                <FileText className="inline-block w-5 h-5 mr-2" />
+                Resume *
+              </h2>
+              <div>
+                <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+                  Upload your resume (PDF or Word)
+                </label>
+                <div className="mt-2 flex items-center gap-4">
+                  <label className="cursor-pointer">
+                    <span className={`px-4 py-2 rounded-md ${
+                      isDarkMode 
+                        ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+                    } transition-colors`}>
+                      Choose File
+                    </span>
+                    <input
+                      type="file"
+                      onChange={handleResumeChange}
+                      accept=".pdf,.doc,.docx"
+                      className="hidden"
+                    />
+                  </label>
+                  <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                    {resumeFile ? resumeFile.name : 'No file chosen'}
+                  </span>
+                </div>
+                {errors.resume && (
+                  <p className="mt-1 text-sm text-red-600">{errors.resume}</p>
+                )}
+                {resumeFile && (
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className={`text-sm ${isDarkMode ? 'text-green-400' : 'text-green-600'}`}>
+                      File ready for upload
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* ID Proof Upload */}
+            <div className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} shadow rounded-lg p-6`}>
+              <h2 className={`text-xl font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                <FileImage className="inline-block w-5 h-5 mr-2" />
+                Identity Verification *
+              </h2>
+              <div>
+                <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+                  Upload ID proofs (Aadhar, PAN, Passport, etc.)
+                </label>
+                <p className={`mt-1 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                  Upload scanned copies or photos of your documents (PDF, JPG, PNG)
+                </p>
+                <div className="mt-4">
+                  <label className="cursor-pointer">
+                    <span className={`px-4 py-2 rounded-md ${
+                      isDarkMode 
+                        ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-800'
+                    } transition-colors`}>
+                      Add Files
+                    </span>
+                    <input
+                      type="file"
+                      onChange={handleIdFileChange}
+                      accept=".pdf,.jpg,.jpeg,.png"
+                      multiple
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+                {errors.idFiles && (
+                  <p className="mt-1 text-sm text-red-600">{errors.idFiles}</p>
+                )}
+                {idFiles.length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    <h3 className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      Selected files:
+                    </h3>
+                    <ul className="space-y-2">
+                      {idFiles.map((file, index) => (
+                        <li key={index} className="flex items-center justify-between p-2 rounded-md bg-gray-100 dark:bg-gray-700">
+                          <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                            {file.name}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => removeIdFile(index)}
+                            className="text-red-500 hover:text-red-700 dark:hover:text-red-400"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -342,7 +554,7 @@ const CreateProfile = () => {
                 </div>
                 <div>
                   <label className={`block text-sm font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
-                    Hourly Rate (USD) *
+                    Hourly Rate (IndianRupee) *
                   </label>
                   <div className="relative mt-1 rounded-md shadow-sm">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
