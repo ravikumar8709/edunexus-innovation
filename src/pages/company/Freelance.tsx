@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   Briefcase,
   Clock,
-  DollarSign,
+  IndianRupee,
   Search,
   BookOpen,
   Code,
@@ -278,7 +278,7 @@ const Freelance = () => {
                         <span>{project.duration}</span>
                       </div>
                       <div className="flex items-center text-gray-600 dark:text-gray-300">
-                        <DollarSign className="h-5 w-5 mr-2 text-gray-400 dark:text-gray-500" />
+                        <IndianRupee className="h-5 w-5 mr-2 text-gray-400 dark:text-gray-500" />
                         <span>{project.payment}</span>
                       </div>
                     </div>
