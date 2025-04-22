@@ -569,7 +569,7 @@ const CreateProfile = () => {
                         isDarkMode
                           ? 'bg-gray-700 border-gray-600 text-white'
                           : 'border-gray-300 text-gray-900'
-                      } ${errors.hourlyRate ? 'border-red-500' : ''}`}
+                      } ₹{errors.hourlyRate ? 'border-red-500' : ''}`}
                       placeholder="0.00"
                       min="0"
                     />
