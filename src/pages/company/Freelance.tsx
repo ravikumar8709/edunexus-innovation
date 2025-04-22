@@ -47,7 +47,7 @@ const Freelance = () => {
       description: "Build a cross-platform mobile app for student group projects and file sharing",
       skills: ["React Native", "Firebase", "Redux"],
       duration: "3-4 months",
-      payment: "$3500-5000",
+      payment: "₹60,000 - ₹1,00,000",
       experience: "Intermediate",
       icon: Code
     },
@@ -58,7 +58,7 @@ const Freelance = () => {
       description: "Integrate third-party APIs for payment processing and video conferencing",
       skills: ["Node.js", "REST APIs", "OAuth"],
       duration: "4-6 weeks",
-      payment: "$1200-1800",
+      payment: "₹25,000 - ₹40,000",
       experience: "Intermediate",
       icon: Code
     },
@@ -69,7 +69,7 @@ const Freelance = () => {
       description: "Develop a system for issuing tamper-proof digital certificates",
       skills: ["Solidity", "Ethereum", "Web3.js"],
       duration: "2-3 months",
-      payment: "$5000-7000",
+      payment: "₹1,00,000 - ₹1,50,000",
       experience: "Advanced",
       icon: Code
     },
@@ -80,7 +80,7 @@ const Freelance = () => {
       description: "Modernize the user interface and improve user experience for our learning platform",
       skills: ["Figma", "UI/UX Design", "User Research"],
       duration: "4-6 weeks",
-      payment: "$1500-2500",
+      payment: "₹30,000 - ₹45,000",
       experience: "Intermediate",
       icon: Palette
     },
@@ -91,7 +91,7 @@ const Freelance = () => {
       description: "Create logo, color scheme, and brand guidelines for new tech education startup",
       skills: ["Logo Design", "Branding", "Illustration"],
       duration: "2-3 weeks",
-      payment: "$800-1200",
+      payment: "₹10,000 - ₹18,000",
       experience: "Entry Level",
       icon: Brush
     },
@@ -102,7 +102,7 @@ const Freelance = () => {
       description: "Design engaging illustrations and animations for programming courses",
       skills: ["Adobe Illustrator", "Motion Graphics", "Storyboarding"],
       duration: "Ongoing",
-      payment: "$40-60/hour",
+      payment: "₹500 - ₹800/hour",
       experience: "Intermediate",
       icon: Image
     },
@@ -113,7 +113,7 @@ const Freelance = () => {
       description: "Write in-depth articles about implementing AI in classroom settings",
       skills: ["Technical Writing", "AI Knowledge", "SEO"],
       duration: "Ongoing",
-      payment: "$50-80/article",
+      payment: "₹1,000 - ₹2,000/article",
       experience: "Intermediate",
       icon: BookOpen
     },
@@ -124,7 +124,7 @@ const Freelance = () => {
       description: "Create lesson plans and exercises for beginner Python programming course",
       skills: ["Curriculum Design", "Python", "Pedagogy"],
       duration: "1-2 months",
-      payment: "$2000-3000",
+      payment: "₹40,000 - ₹60,000",
       experience: "Intermediate",
       icon: Book
     },
@@ -135,7 +135,7 @@ const Freelance = () => {
       description: "Write clear documentation for educational technology SDK",
       skills: ["Technical Documentation", "Markdown", "API Concepts"],
       duration: "3-4 weeks",
-      payment: "$30-45/hour",
+      payment: "₹300 - ₹600/hour",
       experience: "Entry Level",
       icon: FileText
     },
@@ -146,7 +146,7 @@ const Freelance = () => {
       description: "Implement end-to-end testing for student management system",
       skills: ["Cypress", "Jest", "Test Automation"],
       duration: "3-5 weeks",
-      payment: "$1500-2200",
+      payment: "₹25,000 - ₹40,000",
       experience: "Intermediate",
       icon: Bug
     },
@@ -157,7 +157,7 @@ const Freelance = () => {
       description: "Simulate high traffic conditions and identify performance bottlenecks",
       skills: ["JMeter", "Load Testing", "Performance Analysis"],
       duration: "2-3 weeks",
-      payment: "$1200-1800",
+      payment: "₹20,000 - ₹35,000",
       experience: "Advanced",
       icon: Gauge
     },
@@ -168,7 +168,7 @@ const Freelance = () => {
       description: "Ensure compliance with WCAG 2.1 standards for educational application",
       skills: ["Accessibility", "WCAG", "Screen Readers"],
       duration: "2 weeks",
-      payment: "$800-1200",
+      payment: "₹15,000 - ₹25,000",
       experience: "Intermediate",
       icon: Accessibility
     },
@@ -179,7 +179,7 @@ const Freelance = () => {
       description: "Create interactive coding challenge games for kids",
       skills: ["Unity", "C#", "Game Design"],
       duration: "3-5 months",
-      payment: "$6000-9000",
+      payment: "₹1,20,000 - ₹2,00,000",
       experience: "Advanced",
       icon: Gamepad
     },
@@ -190,12 +190,12 @@ const Freelance = () => {
       description: "Script and produce tutorial videos for computer science concepts",
       skills: ["Video Editing", "Screen Recording", "Script Writing"],
       duration: "Ongoing",
-      payment: "$50-75/video",
+      payment: "₹800 - ₹1,500/video",
       experience: "Intermediate",
       icon: Video
     }
-    
   ];
+  
 
   const filteredProjects = selectedCategory === 'all'
     ? projects
